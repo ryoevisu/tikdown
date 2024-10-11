@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Progress } from "@/components/ui/progress"
-import { Clock, Calendar, Download, Heart, MessageSquare, Play, Share2, Music, Info } from 'lucide-react'
+import { Download, Info } from 'lucide-react'
 
 interface VideoData {
   author: {
@@ -15,14 +15,6 @@ interface VideoData {
     nickname: string;
   };
   title: string;
-  cover: string;
-  comment_count: number;
-  collect_count: number;
-  share_count: number;
-  download_count: number;
-  play_count: number;
-  duration: number;
-  create_time: number;
   play: string;
   wmplay: string;
   music: string;
@@ -73,13 +65,6 @@ export default function TikDownClient() {
       setLoading(false)
     }
   }
-
-  const StatItem = ({ icon: Icon, count, label }: { icon: React.ElementType; count: number | string; label: string }) => (
-    <div className="flex items-center space-x-2">
-      <Icon className="w-4 h-4 text-primary" />
-      <span className="text-sm">{count} {label}</span>
-    </div>
-  )
 
   return (
     <div className="container mx-auto p-4 min-h-screen bg-gray-100 flex items-center justify-center">
@@ -138,7 +123,7 @@ export default function TikDownClient() {
           )}
 
           {videoData && (
-            <div className="mt-6 space-y-6">
+            <div className="mt-6 space-y-4">
               <div className="flex items-center space-x-4">
                 <img src={videoData.author.avatar} alt={videoData.author.nickname} className="w-16 h-16 rounded-full" />
                 <div>
@@ -146,30 +131,20 @@ export default function TikDownClient() {
                   <p className="text-sm text-muted-foreground">{videoData.title}</p>
                 </div>
               </div>
-              <img src={videoData.cover} alt="Video thumbnail" className="w-full rounded-lg shadow-lg" />
-              <div className="grid grid-cols-2 gap-4">
-                <StatItem icon={MessageSquare} count={videoData.comment_count} label="Comments" />
-                <StatItem icon={Heart} count={videoData.collect_count} label="Likes" />
-                <StatItem icon={Share2} count={videoData.share_count} label="Shares" />
-                <StatItem icon={Download} count={videoData.download_count} label="Downloads" />
-                <StatItem icon={Play} count={videoData.play_count} label="Plays" />
-                <StatItem icon={Clock} count={Math.round(videoData.duration)} label="Seconds" />
-                <StatItem icon={Calendar} count={new Date(videoData.create_time * 1000).toLocaleDateString()} label="Created" />
-              </div>
               <div className="space-y-2">
                 <Button asChild className="w-full">
-                  <a href={videoData.play}>
+                  <a href={videoData.play} download>
                     <Download className="mr-2 h-4 w-4" /> Download Without Watermark
                   </a>
                 </Button>
                 <Button asChild variant="secondary" className="w-full">
-                  <a href={videoData.wmplay}>
+                  <a href={videoData.wmplay} download>
                     <Download className="mr-2 h-4 w-4" /> Download With Watermark
                   </a>
                 </Button>
                 <Button asChild variant="outline" className="w-full">
-                  <a href={videoData.music}>
-                    <Music className="mr-2 h-4 w-4" /> Download Audio
+                  <a href={videoData.music} download>
+                    <Download className="mr-2 h-4 w-4" /> Download Audio
                   </a>
                 </Button>
               </div>
@@ -183,4 +158,4 @@ export default function TikDownClient() {
       </Card>
     </div>
   )
-        }
+                              }
