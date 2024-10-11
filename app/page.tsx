@@ -8,11 +8,30 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Progress } from "@/components/ui/progress"
 
+interface VideoData {
+  author: {
+    avatar: string;
+    nickname: string;
+  };
+  title: string;
+  cover: string;
+  comment_count: number;
+  collect_count: number;
+  share_count: number;
+  download_count: number;
+  play_count: number;
+  duration: number;
+  create_time: number;
+  play: string;
+  wmplay: string;
+  music: string;
+}
+
 export default function TikDown() {
   const [url, setUrl] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [videoData, setVideoData] = useState(null)
+  const [videoData, setVideoData] = useState<VideoData | null>(null)
   const [progress, setProgress] = useState(0)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -44,13 +63,17 @@ export default function TikDown() {
         throw new Error('Failed to fetch video data. Please check the URL and try again.')
       }
     } catch (error) {
-      setError(error.message)
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred');
+      }
     } finally {
       setLoading(false)
     }
   }
 
-  const StatItem = ({ icon, count, label }) => (
+  const StatItem = ({ icon, count, label }: { icon: string; count: number | string; label: string }) => (
     <div className="flex items-center space-x-2">
       <i className={`fas fa-${icon} text-primary`}></i>
       <span className="text-sm">{count} {label}</span>
@@ -159,4 +182,4 @@ export default function TikDown() {
       </Card>
     </div>
   )
-}
+                    }
